@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>To Do</title>
+</head>
+<body class="bg-slate-800 text-white font-mono">
+    <div id="app">
+        <h1 class="mb-4 text-4xl text-center font-extrabold leading-none tracking-tight text-gray-300 md:text-5xl lg:text-6xl">
+            Mini To Do app
+        </h1>
+        <div class="flex justify-center items-center w-3/4 mx-auto">
+            <div class="flex flex-col w-full bg-gray-700 p-4 rounded shadow border">
+                <!--Remaining task counter-->
+                <div class=" w-full items-centerpy-2 mx-auto">
+                    <h5 class="mb-4 text-xl text-start font-medium leading-none tracking-tight text-gray-300 md:text-2xl lg:text-3xl">
+                        Tasks left to do: {{ tasksCounter ? tasksCounter : "Well done you don't have any tasks left!" }}
+                    </h5>                    
+                </div>
+                <!-- Task input field -->
+                <div class="flex w-full items-center border-b border-teal-500 mb-8 pt-2 pb-1 mx-auto">
+                    <input class="appearance-none bg-transparent border-none w-full text-gray-300 mr-3 py-1 px-2 leading-tight focus:outline-none" type="text">
+                    <button class="flex-shrink-0 h-full bg-teal-500 hover:bg-teal-700 border-teal-500 hover:border-teal-700 text-sm border-4 text-white py-1 px-2 rounded" type="button">
+                      Create Task
+                    </button>
+                    <button class="flex-shrink-0 border-transparent border-4 text-teal-500 hover:text-teal-800 text-sm py-1 px-2 rounded" type="button">
+                      clear
+                    </button>
+                </div>
+                <!-- Tasks Area -->
+                <div class="flex w-full items-stretch border border-teal-500 rounded mb-2 mx-auto">
+                    <div class="flex w-full">
+                        <div class="flex-grow pl-5">
+                            {{ message }}
+                        </div>
+                        <div class="w-1/12 flex items-center justify-center">
+                            <button class="flex items-center justify-center w-full h-full">
+                                <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m15 9-6 6m0-6 6 6m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script>
+    const { createApp, ref } = Vue;
+
+    createApp({
+      setup() {
+        const message = ref('Hello vue!');
+        const tasksCounter = ref(null)
+        
+        return {
+          message,
+          tasksCounter,
+        }
+      }
+    }).mount('#app');
+    </script>
+</body>
+</html>
