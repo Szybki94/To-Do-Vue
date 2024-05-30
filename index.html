@@ -16,7 +16,7 @@
                 <!--Remaining task counter-->
                 <div class=" w-full items-centerpy-2 mx-auto">
                     <h5 class="mb-4 text-base text-start font-medium leading-none tracking-tight text-gray-300 md:text-xl lg:text-2xl">
-                        Tasks left to do: {{ tasksCounter !== 0 ? tasksCounter : "Well done you don't have any tasks left!" }}
+                        {{ tasksCounter}}
                     </h5>                    
                 </div>
                 <!-- Task input field -->
@@ -38,7 +38,7 @@
                             </div>
                             <div class="w-1/12 flex items-center justify-center">
                                 <button @click="finishTask(idx)"class="flex items-center justify-center w-full h-full">
-                                    <svg class="w-full h-gull text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="none" viewBox="0 0 24 24">
+                                    <svg class="w-full text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="none" viewBox="0 0 24 24">
                                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m15 9-6 6m0-6 6 6m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
                                     </svg>
                                 </button>
@@ -51,29 +51,31 @@
     </div>
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <script>
-    const { createApp, ref } = Vue;
+    const { createApp, computed, ref } = Vue;
 
     createApp({
       setup() {
         const taskBody = ref("")
         const tasks = ref([])
-        const tasksCounter = ref(0)
 
         
         const clearTaskBody = () => {
             taskBody.value = "";
         }
         const createTask = () => {
-            if (taskBody.value !== "") {
-                tasks.value.push(taskBody.value);
+            if (taskBody.value.trim() !== "") {
+                tasks.value.push(taskBody.value.trim());
                 clearTaskBody();
-                tasksCounter.value++
             }
         }
         const finishTask = (idx) => {
             tasks.value.splice(idx,1)
             tasksCounter.value--
         }
+
+        const tasksCounter = computed(()=>{
+            return tasks.value.length !== 0 ? "Tasks to do: " + tasks.value.length : "Well done you don't have any tasks left!";
+        })
 
         return {
             taskBody,
