@@ -16,7 +16,7 @@
                 <!--Remaining task counter-->
                 <div class=" w-full items-centerpy-2 mx-auto">
                     <h5 class="mb-4 text-base text-start font-medium leading-none tracking-tight text-gray-300 md:text-xl lg:text-2xl">
-                        Tasks left to do: {{ tasksCounter ? tasksCounter : "Well done you don't have any tasks left!" }}
+                        Tasks left to do: {{ tasksCounter !== 0 ? tasksCounter : "Well done you don't have any tasks left!" }}
                     </h5>                    
                 </div>
                 <!-- Task input field -->
@@ -55,20 +55,24 @@
 
     createApp({
       setup() {
-        const taskBody = ref(null)
+        const taskBody = ref("")
         const tasks = ref([])
-        const tasksCounter = ref(null)
+        const tasksCounter = ref(0)
 
         
         const clearTaskBody = () => {
-            taskBody.value = null;
+            taskBody.value = "";
         }
         const createTask = () => {
-            tasks.value.push(taskBody.value);
-            clearTaskBody();
+            if (taskBody.value !== "") {
+                tasks.value.push(taskBody.value);
+                clearTaskBody();
+                tasksCounter.value++
+            }
         }
         const finishTask = (idx) => {
             tasks.value.splice(idx,1)
+            tasksCounter.value--
         }
 
         return {
