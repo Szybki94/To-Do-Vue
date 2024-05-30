@@ -21,54 +21,28 @@
                 </div>
                 <!-- Task input field -->
                 <div class="flex w-full items-center border-b border-teal-500 mb-8 pt-2 pb-1 mx-auto">
-                    <input class="appearance-none bg-transparent border-none w-full text-gray-300 mr-3 py-1 px-2 leading-tight focus:outline-none" type="text">
-                    <button class="flex-shrink-0 h-full bg-teal-500 hover:bg-teal-700 border-teal-500 hover:border-teal-700 text-sm border-4 text-white py-1 px-2 rounded" type="button">
+                    <input @keyup.enter="createTask" v-model="taskBody" class="appearance-none bg-transparent border-none w-full text-gray-300 mr-3 py-1 px-2 leading-tight focus:outline-none" type="text">
+                    <button @click="createTask" class="flex-shrink-0 h-full bg-teal-500 hover:bg-teal-700 border-teal-500 hover:border-teal-700 text-sm border-4 text-white py-1 px-2 rounded" type="button">
                       Create Task
                     </button>
-                    <button class="flex-shrink-0 border-transparent border-4 text-teal-500 hover:text-teal-800 text-sm py-1 px-2 rounded" type="button">
+                    <button @click="clearTaskBody" class="flex-shrink-0 border-transparent border-4 text-teal-500 hover:text-teal-800 text-sm py-1 px-2 rounded" type="button">
                       clear
                     </button>
                 </div>
                 <!-- Tasks Area -->
-                <div class="flex w-full items-stretch border border-teal-500 rounded mb-4 mx-auto">
-                    <div class="flex w-full">
-                        <div class="flex-grow pl-3 py-3 text-lg">
-                            {{ message }}
-                        </div>
-                        <div class="w-1/12 flex items-center justify-center">
-                            <button class="flex items-center justify-center w-full h-full">
-                                <svg class="w-full h-gull text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="none" viewBox="0 0 24 24">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m15 9-6 6m0-6 6 6m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
-                                </svg>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <div class="flex w-full items-stretch border border-teal-500 rounded mb-4 mx-auto">
-                    <div class="flex w-full">
-                        <div class="flex-grow pl-3 py-3 text-lg">
-                            {{ message }}
-                        </div>
-                        <div class="w-1/12 flex items-center justify-center">
-                            <button class="flex items-center justify-center w-full h-full">
-                                <svg class="w-full h-gull text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="none" viewBox="0 0 24 24">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m15 9-6 6m0-6 6 6m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
-                                </svg>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <div class="flex w-full items-stretch border border-teal-500 rounded mb-4 mx-auto">
-                    <div class="flex w-full">
-                        <div class="flex-grow pl-3 py-3 text-lg">
-                            {{ message }}
-                        </div>
-                        <div class="w-1/12 flex items-center justify-center">
-                            <button class="flex items-center justify-center w-full h-full">
-                                <svg class="w-full h-gull text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="none" viewBox="0 0 24 24">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m15 9-6 6m0-6 6 6m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
-                                </svg>
-                            </button>
+                <div v-for="(task, idx) in tasks" key="idx">
+                    <div class="flex w-full items-stretch border border-teal-500 rounded mb-4 mx-auto">
+                        <div class="flex w-full">
+                            <div class="flex-grow pl-3 py-3 text-lg">
+                                {{ task }}
+                            </div>
+                            <div class="w-1/12 flex items-center justify-center">
+                                <button @click="finishTask(idx)"class="flex items-center justify-center w-full h-full">
+                                    <svg class="w-full h-gull text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="none" viewBox="0 0 24 24">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m15 9-6 6m0-6 6 6m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+                                    </svg>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -81,12 +55,29 @@
 
     createApp({
       setup() {
-        const message = ref('Hello vue!');
+        const taskBody = ref(null)
+        const tasks = ref([])
         const tasksCounter = ref(null)
+
         
+        const clearTaskBody = () => {
+            taskBody.value = null;
+        }
+        const createTask = () => {
+            tasks.value.push(taskBody.value);
+            clearTaskBody();
+        }
+        const finishTask = (idx) => {
+            tasks.value.splice(idx,1)
+        }
+
         return {
-          message,
-          tasksCounter,
+            taskBody,
+            tasks,
+            tasksCounter,
+            clearTaskBody,
+            createTask,
+            finishTask,
         }
       }
     }).mount('#app');
